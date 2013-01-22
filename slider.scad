@@ -1,24 +1,12 @@
-alpha=30;
-beta=78;
-h=2; // base height
-dh=1; // height dent
-u=5; // length
-b=5; // widgh
-overlapp = 2; // overlapping dent
-space=5;
-
-ws=26;
-hs=35;
-// radius slider
-rs=1.5;
+include <config.scad>;
 
 $fn=100;
 
 module dent() {
 	difference() {
-		translate([-u/2,0,0]) cube([u*3/2,b,dh]);
-		translate([u,0,0]) rotate([0,90-beta,0]) translate([-2*u,0,0]) cube([3*u,b,dh]);
-		rotate([0,90-alpha,0]) translate([-3*u,0,-dh*5]) cube([3*u,b,dh*5]);
+		translate([-dent_width/2,0,0]) cube([dent_width*3/2,dent_depth,dent_height]);
+		translate([dent_width,0,0]) rotate([0,90-dent_beta,0]) translate([-2*dent_width,0,0]) cube([3*dent_width,dent_depth,dent_height]);
+		rotate([0,90-dent_alpha,0]) translate([-3*dent_width,0,-dent_height*5]) cube([3*dent_width,dent_depth,dent_height*5]);
 	}
 }
 
@@ -28,20 +16,20 @@ union() {
 		union() {
 			for (j=[0:4])
 				for (i=[1:4]) {
-					translate([i*(space+u),j*(2*b-overlapp)-(i%2)*(b-overlapp/2),0]) dent();
+					translate([i*(dent_inter_space+dent_width),j*(2*dent_depth-dent_overlapp)-(i%2)*(dent_depth-dent_overlapp/2),0]) dent();
 				}
-			translate([0,0,-h]) 
+			translate([0,0,-(slider_height-dent_height)]) 
 				difference() {
-					cube([hs,ws,h]);
+					cube([slider_depth,slider_width,(slider_height-dent_height)]);
 					for (j=[0:4])
 						for (i=[1:4]) {
-							translate([i*(space+u)-space,j*(2*b-overlapp)-(i%2)*(b-overlapp/2),0]) cube([space,b,h]);
+							translate([i*(dent_inter_space+dent_width)-dent_inter_space,j*(2*dent_depth-dent_overlapp)-(i%2)*(dent_depth-dent_overlapp/2),0]) cube([dent_inter_space,dent_depth,(slider_height-dent_height)]);
 						}
 				}
 		}
-		translate([0,0,-h]) cube([hs,ws,h+dh]);
+		translate([0,0,-(slider_height-dent_height)]) cube([slider_depth,slider_width,slider_height]);
 	}
 	// border
-	translate([0,0,-0.5]) rotate([0,90,0]) cylinder(r=rs, h=hs);
-	translate([0,ws,-0.5]) rotate([0,90,0]) cylinder(r=rs, h=hs);
+	translate([0,0,0]) rotate([0,90,0]) cylinder(r=slider_height/2, h=slider_depth);
+	translate([0,slider_width,0]) rotate([0,90,0]) cylinder(r=slider_height/2, h=slider_depth);
 }
