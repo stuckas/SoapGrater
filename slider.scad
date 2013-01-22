@@ -1,6 +1,6 @@
 include <config.scad>;
 
-$fn=100;
+$fn=10;
 
 module dent() {
 	difference() {
@@ -10,26 +10,34 @@ module dent() {
 	}
 }
 
+adjust_x=0;
+adjust_y=1;
 
 union() {
 	intersection() {
 		union() {
-			for (j=[0:4])
-				for (i=[1:4]) {
-					translate([i*(dent_inter_space+dent_width),j*(2*dent_depth-dent_overlapp)-(i%2)*(dent_depth-dent_overlapp/2),0]) dent();
+			for (j=[0:6])
+				for (i=[1:5]) {
+					translate([i*(dent_inter_space+dent_width)+adjust_x,j*(2*dent_depth-dent_overlapp)-(i%2)*(dent_depth-dent_overlapp/2)+adjust_y,0]) dent();
 				}
 			translate([0,0,-(slider_height-dent_height)]) 
 				difference() {
 					cube([slider_depth,slider_width,(slider_height-dent_height)]);
-					for (j=[0:4])
-						for (i=[1:4]) {
-							translate([i*(dent_inter_space+dent_width)-dent_inter_space,j*(2*dent_depth-dent_overlapp)-(i%2)*(dent_depth-dent_overlapp/2),0]) cube([dent_inter_space,dent_depth,(slider_height-dent_height)]);
+					for (j=[0:6])
+						for (i=[1:5]) {
+							translate([i*(dent_inter_space+dent_width)-dent_inter_space+adjust_x,j*(2*dent_depth-dent_overlapp)-(i%2)*(dent_depth-dent_overlapp/2)+adjust_y,0]) cube([dent_inter_space,dent_depth,(slider_height-dent_height)]);
 						}
 				}
 		}
 		translate([0,0,-(slider_height-dent_height)]) cube([slider_depth,slider_width,slider_height]);
 	}
-	// border
-	translate([0,0,0]) rotate([0,90,0]) cylinder(r=slider_height/2, h=slider_depth);
-	translate([0,slider_width,0]) rotate([0,90,0]) cylinder(r=slider_height/2, h=slider_depth);
+	// side rounded parts
+	translate([0,0,-dent_height/2]) rotate([0,90,0]) difference() { 
+		cylinder(r=slider_height/2, h=slider_depth);
+		translate([-slider_height/2,0,0]) cube([slider_height, slider_height/2, slider_depth]);
+	}
+	translate([0,slider_width,-dent_height/2]) rotate([0,90,0]) difference() { 
+		cylinder(r=slider_height/2, h=slider_depth);
+		translate([-slider_height/2,-slider_height/2,0]) cube([slider_height, slider_height/2, slider_depth]);
+	}
 }
