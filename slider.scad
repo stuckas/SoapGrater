@@ -1,13 +1,14 @@
 alpha=30;
-beta=73;
+beta=78;
 h=2; // base height
 dh=1; // height dent
 u=5; // length
 b=5; // widgh
+overlapp = 2; // overlapping dent
 space=5;
 
-ws=51;
-hs=60;
+ws=26;
+hs=35;
 // radius slider
 rs=1.5;
 
@@ -25,21 +26,20 @@ module dent() {
 union() {
 	intersection() {
 		union() {
-			for (j=[0:13])
-				for (i=[0:9]) {
-					translate([i*(space+u)+space,j*(b+1)-(i%2)*2,0]) dent();
+			for (j=[0:4])
+				for (i=[1:4]) {
+					translate([i*(space+u),j*(2*b-overlapp)-(i%2)*(b-overlapp/2),0]) dent();
 				}
-
-			translate([0,0,-2]) 
+			translate([0,0,-h]) 
 				difference() {
-					cube([hs,ws,2]);
-					for (j=[0:13])
-						for (i=[0:9]) {
-							translate([i*(space+u)+1,j*(b+1)-(i%2)*2,0]) cube([space-1,b,2]);
+					cube([hs,ws,h]);
+					for (j=[0:4])
+						for (i=[1:4]) {
+							translate([i*(space+u)-space,j*(2*b-overlapp)-(i%2)*(b-overlapp/2),0]) cube([space,b,h]);
 						}
 				}
 		}
-		translate([0,0,-2]) cube([hs,ws,3]);
+		translate([0,0,-h]) cube([hs,ws,h+dh]);
 	}
 	// border
 	translate([0,0,-0.5]) rotate([0,90,0]) cylinder(r=rs, h=hs);
