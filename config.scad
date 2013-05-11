@@ -1,24 +1,18 @@
 // UNIT = mm
 
-wall_depth=6;
+wall=6;
 
-soap=[46,26,100];
-soap_radius_inner=5;
-soap_radius_outer=soap_radius_inner;
+soap=[55,30,100];
+outer=[soap[0]+2*wall, soap[1]+40+2*wall, 40];
 
-height=40;
-
-back_depth=40;
 distance_screws=35;
 
 ///////////////////////////
 // SLIDER STUFF          //
 ///////////////////////////
 
-slider_width=soap[0]+wall_depth;
-slider_depth=soap[1]+back_depth-wall_depth;
-slider_height=3;
-slider_extra_space=1; // x&y
+slider=[soap[0]+wall, outer[1]-wall, 3];
+slider_extra_space=2; // x&y
 
 dent_width=5;
 dent_depth=5;
@@ -29,4 +23,3 @@ dent_beta=78;
 
 dent_overlapp = 2;
 dent_inter_space=5;
-
