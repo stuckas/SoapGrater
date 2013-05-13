@@ -40,10 +40,10 @@ union() {
 		}
 		translate([0,wall/2,-slider[2]+dent_height]) cube([slider[1],slider[0]-wall,slider[2]]);
 	}
-	// side parts
-	cube([slider[1],wall/2,slider[2]]);
-	translate([0,slider[0]-wall/2,0]) cube([slider[1],wall/2,slider[2]]);
 
-	// closed front
-	translate([slider[1]-wall/2,0,0]) cube([wall/2,slider[0],slider[2]]);
+	// border
+	difference() {
+		cube([slider[1],slider[0],slider[2]]);
+		translate([wall/2,wall/2,0]) cube([slider[1]-wall,slider[0]-wall,slider[2]]);
+	}
 }
